@@ -7,11 +7,10 @@ concept Vector = requires(T a, T b) {
   { a > b } -> std::convertible_to<bool>;
   { a >= b } -> std::convertible_to<bool>;
   { a <= b } -> std::convertible_to<bool>;
-  { a = b } -> std::same_as<T&>;
+  { a = b } -> std::same_as<T &>;
 };
 
-template <Vector T>
-class vector {
+template <Vector T> class vector {
   T *data_{};
   size_t capacity_{};
   size_t size_{};
@@ -30,8 +29,8 @@ public:
       free(data_);
   }
 
-  bool insert(T&& el, size_t index);
-  bool insert(const T& el, size_t index);
+  bool insert(T &&el, size_t index);
+  bool insert(const T &el, size_t index);
 
   // Not copiable
   vector(const T &other) = delete;
