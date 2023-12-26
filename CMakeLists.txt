@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
-project(data-structures CXX)
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# Data Structure and Algorithms (dsa)
+project(dsa CXX)
 
 # Add the source files for your library
 set(SOURCES
@@ -11,7 +9,13 @@ set(SOURCES
 # Create the static library
 add_library(${PROJECT_NAME} STATIC)
 
-target_compile_features(${PROJECT_NAME} PRIVATE c_std_11)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+
+include(FetchContent)
+
+add_subdirectory(third_party)
+
+add_subdirectory(tests)
 
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
 
