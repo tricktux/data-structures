@@ -21,7 +21,7 @@ class vector {
 
 public:
   vector() { data_size_ = sizeof(T); }
-  vector(size_t capacity) : capacity_(capacity) {
+  explicit vector(size_t capacity) : capacity_(capacity) {
     data_size_ = sizeof(T);
     data_ = (T *)malloc(capacity_ * data_size_);
   }
