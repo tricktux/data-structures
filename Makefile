@@ -1,8 +1,6 @@
-.PHONY: all cmake_debug cmake_release ninja_debug ninja_release clean clean_debug clean_release rerelease redebug debug release
+.PHONY: all cmake_debug cmake_release ninja_debug ninja_release clean clean_debug clean_release rerelease redebug debug release tests valgrind
 
 all: debug
-
-TEST_DATA_DIR = "submodules/icc-profile-processing/IccProfileAnalysis/tests/data"
 
 cmake_debug:
 	cmake -B build_debug -S . \
@@ -44,3 +42,8 @@ release: ninja_release
 
 rerelease: clean_release cmake_release ninja_release
 
+tests: debug
+	./build_debug/tests/dsa_tests
+
+valgrind: debug
+	valgrind --leak-check=full --show-leak-kinds=all ./build_debug/tests/dsa_tests
