@@ -30,6 +30,7 @@
         # debugger
         llvm.lldb
         gdb
+        ninja
 
         # fix headers not found
         clang-tools
