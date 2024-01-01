@@ -12,42 +12,38 @@
     # nixpkgs.url = "github:NixOS/nixpkgs/unstable";
     nixpkgs.url = "github:NixOS/nixpkgs/23.11";
     utils.url = "github:numtide/flake-utils";
-    llvm.url = "github:NixOS/llvm-project";
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: inputs.utils.lib.eachSystem [
-    # Add the system/architecture you would like to support here. Note that not
-    # all packages in the official nixpkgs support all platforms.
-    "x86_64-linux" "i686-linux" "aarch64-linux" "x86_64-darwin"
-  ] (system: let
-    pkgs = import nixpkgs {
-      inherit system;
-
-      # Add overlays here if you need to override the nixpkgs
-      # official packages.
-      overlays = [
-        (_self: super: {
-          llvm_latest = llvm.packages.llvm;
-          clang_latest = llvm.packages.clang;
-          clang-tools-extra = llvm.packages.clang-tools-extra;
-        });
-      ];
-      
-      # Uncomment this if you need unfree software (e.g. cuda) for
-      # your project.
-      #
-      # config.allowUnfree = true;
-    };
+  outputs = { self, nixpkgs, utils }@inputs: 
+    utils.lib.eachDefaultSystem  (
+        system: 
+            let
+                pkgs = import nixpkgs { inherit system; };
+                llvm = pkgs.llvmPackages_latest;
   in {
-    devShells.default = pkgs.mkShell rec {
+    devShell = pkgs.mkShell.override { stdenv = pkgs.clangStdenv; } rec {
       # Update the name to something that suites your project.
       name = "data-structures";
 
       packages = with pkgs; [
         # Development Tools
-        clang_latest
-        clang-tools-extra
+        # debugger
+        llvm.lldb
+        gdb
+
+        # fix headers not found
+        clang-tools
+
+        # LSP and compiler
+        llvm.libstdcxxClang
+
+        # other tools
         cppcheck
+        llvm.libllvm
+        valgrind
+
+        # stdlib for cpp
+        llvm.libcxx
         cmake
         cmakeCurses
 
@@ -59,13 +55,9 @@
         abseil-cpp
       ];
 
-      nativeBuildInputs = with pkgs; [
-        clang-tools-extra.clangd
-        clang-tools-extra.clangFormat
-      ];
     };
 
-    packages.default = pkgs.callPackage ./default.nix {};
+    # packages.default = pkgs.callPackage ./default.nix {};
   });
 }
 
