@@ -53,3 +53,5 @@ dkms.conf
 .cache/clangd/index
 build_debug
 compile_commands.json
+Testing/Temporary
+build_release
