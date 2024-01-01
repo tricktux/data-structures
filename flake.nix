@@ -28,37 +28,26 @@
       packages = with pkgs; [
         # Development Tools
         # debugger
+        doxygen
         llvm.lldb
         gdb
         ninja
 
-        # fix headers not found
+        # Lsp and tools
         clang-tools
-
-        # LSP and compiler
-        llvm.libstdcxxClang
 
         # other tools
         cppcheck
-        llvm.libllvm
         valgrind
-
-        # stdlib for cpp
-        llvm.libcxx
         cmake
         cmakeCurses
 
-        # Development time dependencies
+      # Libs
         gtest
-
-        # Build time and Run time dependencies
-        spdlog
-        abseil-cpp
       ];
 
     };
 
-    # packages.default = pkgs.callPackage ./default.nix {};
   });
 }
 
