@@ -10,7 +10,6 @@ cmake_debug:
 				-DENABLE_TESTING=ON \
 				-DENABLE_INSTALL=ON \
 				-GNinja
-	ln -sf build_debug/compile_commands.json compile_commands.json
 
 cmake_release:
 	cmake -B build_release -S . \
@@ -19,7 +18,6 @@ cmake_release:
 				-DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
 				-DENABLE_INSTALL=ON \
 				-GNinja
-	ln -sf build_release/compile_commands.json compile_commands.json
 
 ninja_debug:
 	@[ -d build_debug ] || $(MAKE) cmake_debug
