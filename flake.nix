@@ -14,40 +14,51 @@
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, utils }@inputs: 
-    utils.lib.eachDefaultSystem  (
-        system: 
-            let
-                pkgs = import nixpkgs { inherit system; };
-                llvm = pkgs.llvmPackages_latest;
-  in {
-    devShell = pkgs.mkShell.override { stdenv = pkgs.clangStdenv; } rec {
-      # Update the name to something that suites your project.
-      name = "data-structures";
+  outputs = { self, nixpkgs, utils }@inputs:
+    utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+        llvm = pkgs.llvmPackages_latest;
+      in
+      {
+        devShell = pkgs.mkShell.override { stdenv = pkgs.clangStdenv; } rec {
+          # Update the name to something that suites your project.
+          name = "data-structures";
 
-      packages = with pkgs; [
-        # Development Tools
-        # debugger
-        doxygen
-        llvm.lldb
-        gdb
-        ninja
+          packages = with pkgs; [
+            # Development Tools
+            # debugger
+            doxygen
+            llvm.lldb
+            gdb
+            ninja
 
-        # Lsp and tools
-        clang-tools
+            # Lsp and tools
+            clang-tools
 
-        # other tools
-        cppcheck
-        valgrind
-        cmake
-        cmakeCurses
+            # other tools
+            cppcheck
+            valgrind
+            cmake
+            cmakeCurses
 
-      # Libs
-        gtest
-      ];
+            # Libs
+            gtest
+          ];
 
-    };
+          cmakeFlags = [
+            "-DENABLE_TESTING=OFF"
+            "-DENABLE_INSTALL=ON"
+          ];
+          # shellHook = ''
+          #   export ASAN_SYMBOLIZER_PATH=${llvm}/bin/llvm-symbolizer
 
-  });
+          #   # ASAN_OPTIONS=detect_leaks=1
+          #   export ASAN_OPTIONS="log_path=./test.log:abort_on_error=1"
+          # '';
+        };
+
+      }
+    );
 }
-
