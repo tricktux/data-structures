@@ -3,55 +3,54 @@
 #include <memory>
 
 template <typename T>
-concept Vector = requires(T a, T b) {
+concept Vector = requires(T a, T b)
+{  // clang-format off
   { a < b } -> std::convertible_to<bool>;
   { a > b } -> std::convertible_to<bool>;
   { a >= b } -> std::convertible_to<bool>;
   { a <= b } -> std::convertible_to<bool>;
   { a = b } -> std::same_as<T &>;
-};
+};  // clang-format on
 
 template <Vector T> class vector {
   T *data_{};
+  // std::unique_ptr<T[]> data_{};
   size_t capacity_{};
   size_t size_{};
 
-  bool insert_generic(size_t index);
+  auto insert_generic(size_t index) -> bool;
 
-public:
+ public:
   vector() = default;
-  explicit vector(int capacity) {
-    if (capacity <= 0)
+  explicit vector(int capacity)
+  {
+    if (capacity <= 0) {
       return;
+    }
     capacity_ = capacity;
+    // data_ = std::make_unique<T[]>(capacity_);
     data_ = new T[capacity_];
     std::cout << "allocated '" << capacity << "' elements from capacity\n";
   }
-  vector(std::initializer_list<T> init_list) {
-    size_ = init_list.size();
+  vector(std::initializer_list<T> init_list) : size_(init_list.size())
+  {
     capacity_ = size_;
     data_ = new T[capacity_];
     std::copy(init_list.begin(), init_list.end(), data_);
     std::cout << "allocated '" << size_ << "' bytes from initializer_list\n";
   }
-  ~vector() {
-    if (data_) {
-      delete[] data_;
-      std::cout << "freeing memory\n";
-    }
-  }
+  ~vector() = default;
 
   // TODO: realloc
-  vector(vector<T> &&other) {
-    std::cout << "move ctor!!!\n";
-    size_ = other.size_;
-    capacity_ = other.capacity_;
-    data_ = other.data_;
+  vector(vector<T> &&other) noexcept
+      : data_(other.data_), capacity_(other.capacity_), size_(other.size_)
+  {
     other.size_ = 0;
     other.capacity_ = 0;
     other.data_ = 0;
   }
-  vector(const vector<T> &other) {
+  vector(const vector<T> &other)
+  {
     std::cout << "copy ctor!!!\n";
     if (other.capacity_ > 0) {
       capacity_ = other.capacity_;
@@ -64,17 +63,35 @@ public:
   }
 
   // TODO
-  vector<T> &operator=(const vector<T> &other) = delete;
-  vector<T> &operator=(vector<T> &&other) = delete;
-  T operator[](int idx) const { return data_[idx]; }
+  auto operator=(const vector<T> &other) -> vector<T> & = delete;
+  auto operator=(vector<T> &&other) -> vector<T> & = delete;
+  auto operator[](int idx) const -> T
+  {
+    return data_[idx];
+  }
 
-  bool insert(T &&el, size_t index);
-  bool insert(const T &el, size_t index);
+  auto insert(T &&elem, size_t index) -> bool;
+  auto insert(const T &elem, size_t index) -> bool;
 
-  T *begin() const { return &data_[0]; }
-  const T *cbegin() const { return &data_[0]; }
-  T *end() const { return &data_[size_]; }
-  const T *cend() const { return &data_[size_]; }
+  auto begin() const -> T *
+  {
+    return &data_[0];
+  }
+  auto cbegin() const -> const T *
+  {
+    return &data_[0];
+  }
+  auto end() const -> T *
+  {
+    return &data_[size_];
+  }
+  auto cend() const -> const T *
+  {
+    return &data_[size_];
+  }
 
-  size_t size() const { return size_; }
+  [[nodiscard]] auto size() const -> size_t
+  {
+    return size_;
+  }
 };
