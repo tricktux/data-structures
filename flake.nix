@@ -1,6 +1,6 @@
 {
   # Source: https://raw.githubusercontent.com/nixvital/flake-templates/main/templates/cpp-starter-kit/flake.nix
-  description = "A template for Nix based C++ project setup.";
+  description = "Opinionated Data Structures implemented in C++";
 
   inputs = {
     # Pointing to the current stable release of nixpkgs. You can
@@ -47,16 +47,9 @@
             gtest
           ];
 
-          cmakeFlags = [
-            "-DENABLE_TESTING=OFF"
-            "-DENABLE_INSTALL=ON"
-          ];
-          # shellHook = ''
-          #   export ASAN_SYMBOLIZER_PATH=${llvm}/bin/llvm-symbolizer
-
-          #   # ASAN_OPTIONS=detect_leaks=1
-          #   export ASAN_OPTIONS="log_path=./test.log:abort_on_error=1"
-          # '';
+          shellHook = ''
+            export MY_ENV_VAR="my-env-value"
+          '';
         };
 
       }
