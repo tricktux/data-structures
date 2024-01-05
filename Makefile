@@ -47,7 +47,7 @@ tests: debug
 	./build_debug/tests/dsa_tests
 
 valgrind: debug
-	valgrind -q vgdb-errors=0 ./build_debug/tests/dsa_tests
+	valgrind --tool=memcheck --leak-check=full --vgdb=yes --vgdb-error=0 ./build_debug/tests/dsa_tests
 
 install: release
 	cd build_release && sudo ninja install
