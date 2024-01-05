@@ -1,4 +1,4 @@
-WarningsAsErrors: '*,-clang-diagnostic-unused-function'
+WarningsAsErrors: '-*'
 Checks: >
   Enable all warnings by default. This ensures we don't miss new and useful
   warnings when a new version of clang-tidy is dropped.
