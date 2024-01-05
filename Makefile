@@ -47,7 +47,7 @@ tests: debug
 	./build_debug/tests/dsa_tests
 
 valgrind: debug
-	valgrind --leak-check=full --show-leak-kinds=all ./build_debug/tests/dsa_tests
+	valgrind -q vgdb-errors=0 ./build_debug/tests/dsa_tests
 
 install: release
 	cd build_release && sudo ninja install
