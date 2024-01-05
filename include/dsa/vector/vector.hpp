@@ -39,7 +39,12 @@ template <Vector T> class vector {
     std::copy(init_list.begin(), init_list.end(), data_);
     std::cout << "allocated '" << size_ << "' bytes from initializer_list\n";
   }
-  ~vector() = default;
+  ~vector()
+  {
+    if (data_ != nullptr) {
+      delete[] data_;
+    }
+  };
 
   // TODO: realloc
   vector(vector<T> &&other) noexcept
