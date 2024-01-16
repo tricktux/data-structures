@@ -21,10 +21,12 @@ cmake_release:
 
 ninja_debug:
 	@[ -d build_debug ] || $(MAKE) cmake_debug
+	@ln -sf build_debug/compile_commands.json .
 	ninja -C build_debug
 
 ninja_release:
 	@[ -d build_release ] || $(MAKE) cmake_release
+	@ln -sf build_release/compile_commands.json .
 	ninja -C build_release
 
 clean: clean_debug clean_release
