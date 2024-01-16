@@ -32,7 +32,7 @@ template <Vector T> class vector {
     data_ = new T[capacity_];
     std::cout << "allocated '" << capacity << "' elements from capacity\n";
   }
-  vector(std::initializer_list<T> init_list) : size_(init_list.size())
+  explicit vector(std::initializer_list<T> init_list) : size_(init_list.size())
   {
     capacity_ = size_;
     data_ = new T[capacity_];
@@ -78,19 +78,19 @@ template <Vector T> class vector {
   auto insert(T &&elem, size_t index) -> bool;
   auto insert(const T &elem, size_t index) -> bool;
 
-  auto begin() const -> T *
+  [[nodiscard]] auto begin() const -> T *
   {
     return &data_[0];
   }
-  auto cbegin() const -> const T *
+  [[nodiscard]] auto cbegin() const -> const T *
   {
     return &data_[0];
   }
-  auto end() const -> T *
+  [[nodiscard]] auto end() const -> T *
   {
     return &data_[size_];
   }
-  auto cend() const -> const T *
+  [[nodiscard]] auto cend() const -> const T *
   {
     return &data_[size_];
   }
