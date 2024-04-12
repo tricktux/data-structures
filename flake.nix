@@ -20,24 +20,29 @@
       let
         pkgs = import nixpkgs { inherit system; };
         llvm = pkgs.llvmPackages_latest;
+        data-structures = (with pkgs; llvm.stdenv.mkDerivation {
+          pname = "data-structures";
+          version = "0.0.1";
+          src = ./.;
+          nativeBuildInputs = [
+            gtest
+            clang
+            cmake
+          ];
+        }
+        );
       in
-      {
-        devShell = pkgs.mkShell.override { stdenv = pkgs.clangStdenv; } rec {
-          # Update the name to something that suites your project.
-          name = "data-structures";
-
-          packages = with pkgs; [
-            # Development Tools
-            # debugger
+      rec {
+        defaultApp = utils.lib.mkApp {
+          drv = defaultPackage;
+        };
+        defaultPackage = data-structures;
+        devShell = pkgs.mkShell {
+          buildInputs = with pkgs; [
             doxygen
             llvm.lldb
             gdb
             ninja
-
-            # Lsp and tools
-            clang-tools
-
-            # other tools
             cppcheck
             valgrind
             cmake
@@ -45,13 +50,9 @@
 
             # Libs
             gtest
+            data-structures
           ];
-
-          shellHook = ''
-            export MY_ENV_VAR="my-env-value"
-          '';
         };
-
       }
     );
 }
