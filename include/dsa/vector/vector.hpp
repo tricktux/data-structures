@@ -3,8 +3,7 @@
 #include <memory>
 
 template <typename T>
-concept Vector = requires(T a, T b)
-{  // clang-format off
+concept Vector = requires(T a, T b) {  // clang-format off
   { a < b } -> std::convertible_to<bool>;
   { a > b } -> std::convertible_to<bool>;
   { a >= b } -> std::convertible_to<bool>;

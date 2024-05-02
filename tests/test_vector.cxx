@@ -1,10 +1,12 @@
-#include "dsa/vector/vector.hpp"
 #include <gtest/gtest.h>
 #include <iostream>
 
-TEST(mytest, this_test) {
+#include "dsa/vector/vector.hpp"
+
+TEST(vector, constructor)
+{
   vector<int> v(10);
-  vector<float> f{8.8f, 7.0f, 79.9f};
+  vector<float> f{ 8.8f, 7.0f, 79.9f };
   std::cout << "f =\n";
   for (auto d : f)
     std::cout << "\td = '" << d << "'\n";
