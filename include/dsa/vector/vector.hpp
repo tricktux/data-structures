@@ -18,6 +18,15 @@ template <Vector T> class vector {
   size_t size_{};
 
   auto insert_generic(size_t index) -> bool;
+  void delete_data()
+  {
+    if (data_ != nullptr) {
+      delete[] data_;
+      data_ = nullptr;
+    }
+    capacity_ = 0;
+    size_ = 0;
+  }
 
  public:
   vector() = default;
@@ -40,12 +49,9 @@ template <Vector T> class vector {
   }
   ~vector()
   {
-    if (data_ != nullptr) {
-      delete[] data_;
-    }
+    delete_data();
   };
 
-  // TODO: realloc
   vector(vector<T> &&other) noexcept
       : data_(other.data_), capacity_(other.capacity_), size_(other.size_)
   {
@@ -66,8 +72,26 @@ template <Vector T> class vector {
     }
   }
 
-  // TODO
-  auto operator=(const vector<T> &other) -> vector<T> & = delete;
+  auto operator=(const vector<T> &other) -> vector<T> &
+  {
+    if (this == &other) {
+      return *this;
+    }
+
+    if (other.capacity_ > 0) {
+      capacity_ = other.capacity_;
+      delete_data();
+      data_ = new T[capacity_];
+    }
+
+    if (other.size_ > 0) {
+      std::copy(other.begin(), other.end(), data_);
+      size_ = other.size_;
+    }
+    return *this;
+  }
+
+  // TODO: realloc
   auto operator=(vector<T> &&other) -> vector<T> & = delete;
   auto operator[](int idx) const -> T
   {

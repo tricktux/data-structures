@@ -10,6 +10,7 @@ template <Vector T> auto vector<T>::insert(T &&elem, size_t index) -> bool
   return true;
 }
 
+// TODO: rename this function
 template <Vector T> auto vector<T>::insert_generic(size_t index) -> bool
 {
   if (data_ == nullptr) {
