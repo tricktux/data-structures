@@ -1,6 +1,5 @@
-#include <concepts>
-#include <iostream>
-#include <memory>
+// Use (void) to silence unused warnings.
+#define assertm(exp, msg) assert(((void)msg, exp))
 
 template <typename T>
 concept Vector = requires(T a, T b) {  // clang-format off
@@ -55,18 +54,15 @@ template <Vector T> class vector {
   {
     other.size_ = 0;
     other.capacity_ = 0;
-    other.data_ = 0;
+    other.data_ = nullptr;
   }
-  vector(const vector<T> &other)
+  vector(const vector<T> &other): capacity_(other.capacity_), size_(other.size_)
   {
-    if (other.capacity_ > 0) {
-      capacity_ = other.capacity_;
+    assertm(capacity_ >= size_, "size is greater than capacity");
+    if (capacity_ > 0)
       data_ = new T[capacity_];
-    }
-    if (other.size_ > 0) {
+    if (size_ > 0) 
       std::copy(other.begin(), other.end(), data_);
-      size_ = other.size_;
-    }
   }
 
   auto operator=(const vector<T> &other) -> vector<T> &
@@ -75,15 +71,16 @@ template <Vector T> class vector {
       return *this;
     }
 
-    if (other.capacity_ > 0) {
-      capacity_ = other.capacity_;
-      delete_data();
+    assertm(capacity_ >= size_, "size is greater than capacity");
+    delete_data();
+    capacity_ = other.capacity_;
+    size_ = other.size_;
+    if (capacity_ > 0) {
       data_ = new T[capacity_];
     }
 
-    if (other.size_ > 0) {
+    if (size_ > 0) {
       std::copy(other.begin(), other.end(), data_);
-      size_ = other.size_;
     }
     return *this;
   }

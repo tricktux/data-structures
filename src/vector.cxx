@@ -1,3 +1,8 @@
+#include <concepts>
+#include <iostream>
+#include <memory>
+#include <cassert>
+
 #include "dsa/vector/vector.hpp"
 
 template <Vector T> auto vector<T>::insert(T &&elem, size_t index) -> bool

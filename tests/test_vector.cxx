@@ -9,6 +9,7 @@ TEST(vector, constructor)
   vector<int> v(10);
   // Constructor with initializer list
   vector<float> f{ 8.8f, 7.0f, 79.9f };
+  vector<double> d{};
 }
 
 TEST(vector, iterators)
@@ -47,6 +48,7 @@ TEST(vector, copy_assignment)
 {
   vector<float> f{ 8.8f, 7.0f, 79.9f };
   vector<float> f4{ 1.0f, 2.0f, 3.0f };
+  vector<float> f5{};
   std::cout << "f4 originally =\n";
   for (auto d : f4)
     std::cout << "\td = '" << d << "'\n";
@@ -57,4 +59,5 @@ TEST(vector, copy_assignment)
   std::cout << "f\n";
   for (auto d : f)
     std::cout << "\td = '" << d << "'\n";
+  f4 = f5;
 }
