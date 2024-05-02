@@ -38,14 +38,12 @@ template <Vector T> class vector {
     capacity_ = capacity;
     // data_ = std::make_unique<T[]>(capacity_);
     data_ = new T[capacity_];
-    std::cout << "allocated '" << capacity << "' elements from capacity\n";
   }
   explicit vector(std::initializer_list<T> init_list) : size_(init_list.size())
   {
     capacity_ = size_;
     data_ = new T[capacity_];
     std::copy(init_list.begin(), init_list.end(), data_);
-    std::cout << "allocated '" << size_ << "' bytes from initializer_list\n";
   }
   ~vector()
   {
@@ -61,7 +59,6 @@ template <Vector T> class vector {
   }
   vector(const vector<T> &other)
   {
-    std::cout << "copy ctor!!!\n";
     if (other.capacity_ > 0) {
       capacity_ = other.capacity_;
       data_ = new T[capacity_];
