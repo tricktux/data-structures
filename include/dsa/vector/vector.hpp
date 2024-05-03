@@ -70,10 +70,10 @@ template <Vector T> class vector {
     if (this == &other)
       return *this;
 
-    assertm(capacity_ >= size_, "size is greater than capacity");
     delete_data();
     capacity_ = other.capacity_;
     size_ = other.size_;
+    assertm(capacity_ >= size_, "size is greater than capacity");
     if (capacity_ > 0)
       data_ = new T[capacity_];
 
