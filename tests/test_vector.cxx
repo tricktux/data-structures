@@ -61,3 +61,17 @@ TEST(vector, copy_assignment)
     std::cout << "\td = '" << d << "'\n";
   f4 = f5;
 }
+
+TEST(vector, move_assignment)
+{
+  vector<float> f{ 8.8f, 7.0f, 79.9f };
+  vector<float> f4{ 1.0f, 2.0f, 3.0f };
+
+  std::cout << "f4 originally =\n";
+  for (auto d : f4)
+    std::cout << "\td = '" << d << "'\n";
+  f4 = std::move(f);
+  std::cout << "f4 after the copy =\n";
+  for (auto d : f4)
+    std::cout << "\td = '" << d << "'\n";
+}

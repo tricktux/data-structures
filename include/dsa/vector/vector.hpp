@@ -56,37 +56,50 @@ template <Vector T> class vector {
     other.capacity_ = 0;
     other.data_ = nullptr;
   }
-  vector(const vector<T> &other): capacity_(other.capacity_), size_(other.size_)
+  vector(const vector<T> &other) : capacity_(other.capacity_), size_(other.size_)
   {
     assertm(capacity_ >= size_, "size is greater than capacity");
     if (capacity_ > 0)
       data_ = new T[capacity_];
-    if (size_ > 0) 
+    if (size_ > 0)
       std::copy(other.begin(), other.end(), data_);
   }
 
   auto operator=(const vector<T> &other) -> vector<T> &
   {
-    if (this == &other) {
+    if (this == &other)
       return *this;
-    }
 
     assertm(capacity_ >= size_, "size is greater than capacity");
     delete_data();
     capacity_ = other.capacity_;
     size_ = other.size_;
-    if (capacity_ > 0) {
+    if (capacity_ > 0)
       data_ = new T[capacity_];
-    }
 
-    if (size_ > 0) {
+    if (size_ > 0)
       std::copy(other.begin(), other.end(), data_);
-    }
     return *this;
   }
 
   // TODO: realloc
-  auto operator=(vector<T> &&other) -> vector<T> & = delete;
+  auto operator=(vector<T> &&other) -> vector<T> &
+  {
+    if (this == &other)
+      return *this;
+
+    delete_data();
+    capacity_ = other.capacity_;
+    size_ = other.size_;
+    assertm(capacity_ >= size_, "size is greater than capacity");
+    data_ = other.data_;
+
+    other.size_ = 0;
+    other.capacity_ = 0;
+    other.data_ = nullptr;
+    return *this;
+  }
+
   auto operator[](int idx) const -> T
   {
     return data_[idx];
