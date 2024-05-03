@@ -15,7 +15,6 @@ concept Vector = requires(T a, T b) {  // clang-format off
 
 template <Vector T> class vector {
   T *data_{};
-  // std::unique_ptr<T[]> data_{};
   size_t capacity_{};
   size_t size_{};
 
@@ -34,11 +33,9 @@ template <Vector T> class vector {
   vector() = default;
   explicit vector(int capacity)
   {
-    if (capacity <= 0) {
+    if (capacity <= 0)
       return;
-    }
     capacity_ = capacity;
-    // data_ = std::make_unique<T[]>(capacity_);
     data_ = new T[capacity_];
   }
   explicit vector(std::initializer_list<T> init_list) : size_(init_list.size())
