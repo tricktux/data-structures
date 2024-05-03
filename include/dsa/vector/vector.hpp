@@ -82,7 +82,6 @@ template <Vector T> class vector {
     return *this;
   }
 
-  // TODO: realloc
   auto operator=(vector<T> &&other) -> vector<T> &
   {
     if (this == &other)
@@ -107,6 +106,11 @@ template <Vector T> class vector {
 
   auto insert(T &&elem, size_t index) -> bool;
   auto insert(const T &elem, size_t index) -> bool;
+
+  [[nodiscard]] auto empty() const -> bool
+  {
+    return size_ == 0;
+  }
 
   [[nodiscard]] auto begin() const -> T *
   {
