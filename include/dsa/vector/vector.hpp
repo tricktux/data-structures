@@ -1,13 +1,16 @@
 // Use (void) to silence unused warnings.
+
+namespace dsa::vector {
+
 #define assertm(exp, msg) assert(((void)msg, exp))
 
 template <typename T>
 concept Vector = requires(T a, T b) {  // clang-format off
-  { a < b } -> std::convertible_to<bool>;
-  { a > b } -> std::convertible_to<bool>;
-  { a >= b } -> std::convertible_to<bool>;
-  { a <= b } -> std::convertible_to<bool>;
-  { a = b } -> std::same_as<T &>;
+{ a < b } -> std::convertible_to<bool>;
+{ a > b } -> std::convertible_to<bool>;
+{ a >= b } -> std::convertible_to<bool>;
+{ a <= b } -> std::convertible_to<bool>;
+{ a = b } -> std::same_as<T &>;
 };  // clang-format on
 
 template <Vector T> class vector {
@@ -134,3 +137,5 @@ template <Vector T> class vector {
     return size_;
   }
 };
+
+}  // namespace dsa::vector

@@ -1,9 +1,11 @@
+#include <cassert>
 #include <concepts>
 #include <iostream>
 #include <memory>
-#include <cassert>
 
 #include "dsa/vector/vector.hpp"
+
+namespace dsa::vector {
 
 template <Vector T> auto vector<T>::insert(T &&elem, size_t index) -> bool
 {
@@ -45,3 +47,5 @@ template <Vector T> auto vector<T>::insert(const T &elem, size_t index) -> bool
   data_[index] = elem;
   return true;
 }
+
+}  // namespace dsa::vector
