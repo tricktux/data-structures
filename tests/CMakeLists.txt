@@ -4,6 +4,7 @@ target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>)
 
 target_compile_features(${PROJECT_NAME}_tests PRIVATE cxx_std_20)
+target_compile_options(${PROJECT_NAME}_tests PRIVATE -Werror -Wall -pedantic -Wfloat-equal -Wuninitialized)
 target_link_libraries(${PROJECT_NAME}_tests GTest::gtest_main ${PROJECT_NAME})
 gtest_discover_tests(${PROJECT_NAME}_tests)
 
