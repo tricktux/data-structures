@@ -10,5 +10,5 @@ gtest_discover_tests(${PROJECT_NAME}_tests)
 
 add_custom_target(
   run_tests ALL
-  COMMAND ${CMAKE_CTEST_COMMAND}
+  COMMAND ${CMAKE_CTEST_COMMAND} --rerun-failed --output-on-failure
   DEPENDS ${PROJECT_NAME}_tests)
