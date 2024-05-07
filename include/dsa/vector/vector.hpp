@@ -1,7 +1,11 @@
-// Use (void) to silence unused warnings.
+#include <cassert>
+#include <concepts>
+#include <iostream>
+#include <memory>
 
 namespace dsa::vector {
 
+// Use (void) to silence unused warnings.
 #define assertm(exp, msg) assert(((void)msg, exp))
 
 template <typename T>
@@ -18,7 +22,6 @@ template <Vector T> class vector {
   size_t capacity_{};
   size_t size_{};
 
-  auto insert_generic(size_t index) -> bool;
   void delete_data()
   {
     if (data_ != nullptr) {
@@ -27,6 +30,50 @@ template <Vector T> class vector {
     }
     capacity_ = 0;
     size_ = 0;
+  }
+
+  void shift_right_(size_t index)
+  {
+    for (size_t k{ size_ }; k > index; k--)
+      data_[k] = data_[k - 1];
+  }
+
+  void shift_left_(size_t index)
+  {
+    for (size_t k{ index }; k < size_; k++)
+      data_[k] = data_[k + 1];
+  }
+
+  auto validate_index(size_t index) -> bool
+  {
+    if (data_ == nullptr)
+      return false;
+
+    if (index >= size_)
+      return false;
+
+    return true;
+  }
+
+  auto increase_size_by_one() -> bool
+  {
+    if (size_ + 1 > capacity_)
+      return false;
+
+    size_++;
+    return true;
+  }
+
+  auto insert_generic(size_t index) -> bool
+  {
+    if (!validate_index(index))
+      return false;
+
+    if (!increase_size_by_one())
+      return false;
+
+    shift_right_(index);
+    return true;
   }
 
  public:
@@ -104,9 +151,6 @@ template <Vector T> class vector {
     return data_[idx];
   }
 
-  auto insert(T &&elem, size_t index) -> bool;
-  auto insert(const T &elem, size_t index) -> bool;
-
   [[nodiscard]] auto empty() const -> bool
   {
     return size_ == 0;
@@ -132,6 +176,24 @@ template <Vector T> class vector {
   [[nodiscard]] auto size() const -> size_t
   {
     return size_;
+  }
+
+  auto insert(T &&elem, size_t index) -> bool
+  {
+    if (!insert_generic(index))
+      return false;
+
+    data_[index] = std::move(elem);
+    return true;
+  }
+
+  auto insert(const T &elem, size_t index) -> bool
+  {
+    if (!insert_generic(index))
+      return false;
+
+    data_[index] = elem;
+    return true;
   }
 };
 
