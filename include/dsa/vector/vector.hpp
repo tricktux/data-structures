@@ -40,7 +40,7 @@ template <Vector T> class vector {
 
   void shift_left_(size_t index)
   {
-    for (size_t k{ index }; k < size_; k++)
+    for (size_t k{ index }; k < size_ - 1; k++)
       data_[k] = data_[k + 1];
   }
 
